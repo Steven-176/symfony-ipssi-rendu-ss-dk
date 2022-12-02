@@ -39,6 +39,23 @@ class ArticleRepository extends ServiceEntityRepository
         }
     }
 
+     /**
+    * @return Article[] Returns an array of Article objects
+    */
+   public function findByCreatedDate(int $author = null): array
+   {
+        $qb = $this->createQueryBuilder('article');
+
+        if($author) {
+            $qb->andWhere('article.author = :author')
+            ->setParameter('author', $author);
+        }
+        $qb->orderBy('a.editedAt', 'DESC')
+        ->setMaxResults(3);
+
+        return $qb->getQuery()->getResult();
+   }
+
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */
