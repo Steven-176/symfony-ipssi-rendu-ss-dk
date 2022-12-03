@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +19,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/profile/{id}', name: 'app_user_show')]
-    public function getProfile(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function getProfile(Request $request, User $user, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         if ($user->getId() == $this->getUser()->getId()) {
             $profile = $user;
@@ -36,6 +38,7 @@ class UserController extends AbstractController
                     )
                 );
     
+                $userRepository->save($profile, true);
                 $entityManager->persist($user);
                 $entityManager->flush();
                 

@@ -3,11 +3,31 @@
 {% block title %}Hello UserController!{% endblock %}
 
 {% block body %}
-    <h1>Hello {{ user.email }}</h1>
+    <h1>Hello {{ user.firstname ~ " " ~ user.name }}</h1>
+    
+    <div>
+        <h2>Mes informations</h2>
+        <p>Prénom : {{ user.firstname }}</p>
+        <p>Nom : {{ user.name }}</p>
+        <p>Email : {{ user.email }}</p>
+        {# <p>{{ user.roles }}</p> #}
+        
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+
+
+    <h2>Modifier mes informations</h2>
     {{ form_start(form) }}
-        {{ form_widget(form) }}
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.email) }}        
         <button class="btn action_button">{{ button_label|default('Save') }}</button>
-    {{ form_end(form) }}
+    {{ form_end(form, {'render_rest': false}) }}
+
+    
     <div class="content_container">
             <div>
             <h2>Mes articles</h2>
