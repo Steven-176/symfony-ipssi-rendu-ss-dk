@@ -23,6 +23,8 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+        $arrayRoles = [];
+
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
@@ -31,6 +33,8 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            // array_push($arrayRoles, $form->get('roles')->getData()); 
+            // $user->setRoles($arrayRoles);
 
             $entityManager->persist($user);
             $entityManager->flush();

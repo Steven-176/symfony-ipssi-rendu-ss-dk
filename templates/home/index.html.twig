@@ -19,6 +19,8 @@
 					{{ article.author.firstname }}
 				</p>
 			{% endif %}
+			<p>{{ article.createdAt |date('d-m-Y H:i') }}</p>
+			<p>{{ article.editedAt |date('d-m-Y H:i') }}</p>
 			<div class="action_button_container">
 				<a class="action_button" href="{{ path('app_article_show', {'id': article.id}) }}">Voir</a>
 			</div>

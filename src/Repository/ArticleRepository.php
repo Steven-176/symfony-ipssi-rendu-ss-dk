@@ -50,7 +50,7 @@ class ArticleRepository extends ServiceEntityRepository
             $qb->andWhere('article.author = :author')
             ->setParameter('author', $author);
         }
-        $qb->orderBy('a.editedAt', 'DESC')
+        $qb->orderBy('article.edited_at', 'DESC')
         ->setMaxResults(3);
 
         return $qb->getQuery()->getResult();
