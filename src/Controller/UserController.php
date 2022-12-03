@@ -31,18 +31,26 @@ class UserController extends AbstractController
     
             if ($form->isSubmitted() && $form->isValid()) {
                 // encode the plain password
-                $user->setPassword(
-                    $this->userPasswordHasher->hashPassword(
-                        $user,
-                        $form->get('plainPassword')->getData()
-                    )
-                );
+
+                // $user->setPassword(
+                //     $this->userPasswordHasher->hashPassword(
+                //         $user,
+                //         $form->get('plainPassword')->getData()
+                //     )
+                // );
+
+                $user = $form->getData();
     
-                $userRepository->save($profile, true);
+                // $userRepository->save($profile, true);
                 $entityManager->persist($user);
                 $entityManager->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Les informations de votre compte ont bien été modifiées.'
+                );
                 
-                return $this->redirectToRoute('app_user_show', ["id" => $user->getId()]);
+                return $this->redirectToRoute('app_home');
             }
                     
         return $this->render('user/index.html.twig', [
