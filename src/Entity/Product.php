@@ -33,9 +33,6 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $flocking = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $quantity = null;
 
@@ -50,6 +47,9 @@ class Product
 
     #[ORM\OneToMany(mappedBy: 'products', targetEntity: CartProduct::class)]
     private Collection $cartProducts;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Size = null;
 
     public function __construct()
     {
@@ -133,18 +133,6 @@ class Product
         return $this;
     }
 
-    public function getFlocking(): ?string
-    {
-        return $this->flocking;
-    }
-
-    public function setFlocking(?string $flocking): self
-    {
-        $this->flocking = $flocking;
-
-        return $this;
-    }
-
     public function getQuantity(): ?int
     {
         return $this->quantity;
@@ -219,6 +207,18 @@ class Product
                 $cartProduct->setProducts(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSize(): ?string
+    {
+        return $this->Size;
+    }
+
+    public function setSize(?string $Size): self
+    {
+        $this->Size = $Size;
 
         return $this;
     }

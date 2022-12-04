@@ -4,20 +4,40 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use App\Form\ProductFilterType;
 use App\Repository\ProductRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/product')]
 class ProductController extends AbstractController
 {
-    #[Route('/', name: 'app_product_index', methods: ['GET'])]
-    public function index(ProductRepository $productRepository): Response
+    #[Route('', name: 'app_product_index', methods: ['GET'])]
+    public function index(Request $request, ProductRepository $productRepository): Response
     {
+        $productForm = $this->createForm(ProductFilterType::class);
+        $productForm->handleRequest($request);
+
+        if ($productForm->isSubmitted() && $productForm->isValid()) {
+            $price_min = $productForm->get('price_min')->getData();
+            $price_max = $productForm->get('price_max')->getData();
+            $seller = $productForm->get('seller')->getData();
+            $category = $productForm->get('category')->getData();
+            $order = $productForm->get('order')->getData();
+            $sellerId = $seller->getId();
+            $categoryId = $category->getId();
+            
+            $products = $productRepository->findByFilterType($price_min, $price_max, $seller, $category, $order);
+        } else {
+
+            $products = $productRepository->findAll();
+        }
+        
         return $this->render('product/index.html.twig', [
-            'products' => $productRepository->findAll(),
+            'products' => $products,
+            'productForm' => $productForm->createView()
         ]);
     }
 

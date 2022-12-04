@@ -3,18 +3,31 @@
 {% block title %}Product index{% endblock %}
 
 {% block body %}
-    <h1>Liste des produits</h1>
-        {% for product in products %}
-        <section>
-            <h2>{{ product.title }}</h2>
-            <p><img src="{{ product.image }}"></p>
-            <p>{{ product.description }}</p>
-            <p>Prix: {{ product.price }} €</p>
-            <p>
-                <a class="action_button" href="{{ path('app_product_show', {'id': product.id}) }}">Détails</a>
-                <a class="action_button" href="{{ path('app_home') }}" style="background-color:green">+</a>
-            </p>
-        </section>
-        {% endfor %}
-    <a class="action_button" href="{{ path('app_product_new') }}">Créer une offre</a>
+    <p>
+        <div style="justify-content:space-between;display:flex">
+            <h1>Liste des produits</h1>
+            <a class="action_button" href="{{ path('app_product_new') }}" style="margin-right:20px">Créer une offre</a>
+        </div>
+    </p>
+    
+    <div class="product_block">
+    <h3>Filtrer:</h3>
+        {{ form_start(productForm) }}
+        {{ form_widget(productForm) }}
+        <button class="btn action_button">{{ button_label|default('Envoyer') }}</button>
+        {{ form_end(productForm) }}
+    </div>
+
+    {% for product in products %}
+    <section>
+        <h2>{{ product.title }}</h2>
+        <p><img src="{{ product.image }}" width="150px" height="auto"></p>
+        <p>{{ product.description }}</p>
+        <p>Prix: {{ product.price }} €</p>
+        <p>
+            <a class="action_button" href="{{ path('app_product_show', {'id': product.id}) }}">Détails</a>
+            <a class="action_button" href="{{ path('app_home') }}" style="background-color:green">+</a>
+        </p>
+    </section>
+    {% endfor %}
 {% endblock %}

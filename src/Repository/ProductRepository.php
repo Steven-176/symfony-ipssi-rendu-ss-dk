@@ -39,6 +39,40 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+    * @return Product[] Returns an array of Product objects
+    */
+    public function findByFilterType(int $price_min = null, int $price_max = null, string $seller = null, string $category = null, string $order = null): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        if ($price_min && $price_max) {
+            $qb->andWhere('p.price BETWEEN :price_min AND :price_max')
+                ->setParameter('price', $price);
+        } elseif ($price_min) {
+            $qb->andWhere('p.price >= :price_min')
+                ->setParameter('price', $price);
+        } elseif ($price_max) {
+            $qb->andWhere('p.price <= :price_max')
+                ->setParameter('price', $price);
+        }
+
+        if ($seller) {
+            $qb->andWhere('p.seller = :seller')
+                ->setParameter('seller', $seller);
+        }
+        
+        if ($category) {
+            $qb->andWhere('p.category = :category')
+                ->setParameter('category', $category);
+        }
+
+        $qb->orderBy('p.created_at', ':order')
+            ->setParameter('order', $order);
+
+        return $qb->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */
