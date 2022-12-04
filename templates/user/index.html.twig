@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+    <h1>Hello {{ user.firstname ~ " " ~ user.name }}</h1>
+    
+    <div>
+        <h2>Mes informations</h2>
+        <p>Prénom : {{ user.firstname }}</p>
+        <p>Nom : {{ user.name }}</p>
+        <p>Email : {{ user.email }}</p>
+
+        {% if user.roles | last == 'ROLE_ADMIN' %}
+            <p>Statut : Admin</p>
+        {% elseif user.roles | last == 'ROLE_SELLER' %}
+            <p>Statut : Vendeur</p>
+        {% else %}
+            <p>Statut : Client</p>
+        {% endif %}
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+
+
+    <h2>Modifier mes informations</h2>
+    {{ form_start(form) }}
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.email) }}        
+        <button class="btn action_button">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+
+    <br/>
+    <br/>
+    <br/>
+
+    <h2>Modifier mon mot de passe</h2>
+    {{ form_start(passwordForm) }}
+        {# {{ form_row(passwordForm.plainPassword) }}    #}
+        {{ form_row(passwordForm.password) }}   
+        <button class="btn action_button">{{ button_label|default('Save') }}</button>
+    {{ form_end(passwordForm) }}
+
+    
+    <div class="content_container">
+            <div>
+            <h2>Mes articles</h2>
+        {% for article in articles %}
+            <section>
+                <h2>{{ article.title }}</h2>
+                <p>{{ article.content }}</p>
+                {% if article.author %}
+                <p class="article_author">
+                Auteur: {{ article.author.name }} {{ article.author.firstname }}
+                </p>
+                {% endif %}
+            <div class="action_button_container">
+                <a class="action_button" href="{{ path('app_article_show', {'id': article.id}) }}">show</a>
+                <a class="action_button" href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
+            </div>
+            </section>
+        {% endfor %}  
+    </div>
+    <div> 
+    <h2>Mes produits</h2>
+        {% for product in products %}
+        <section>
+            <h2>{{ product.title }}</h2>
+            <p>{{ product.description }}</p>
+            <p>Prix: {{ product.price }} €</p>
+            <p>Catégorie: {{ product.category.name }}</p>
+            <p>Vendeur : {{ product.seller.name }} {{ product.seller.firstname }}</p>
+        </section>
+            <a class="action_button" href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
+            <a class="action_button" href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}

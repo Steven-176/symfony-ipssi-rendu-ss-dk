@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article index
+{% endblock %}
+
+{% block body %}
+	{% if app.user %}
+		<a class="action_button" href="{{ path('app_article_new') }}">Créer un nouvel article</a>
+	{% endif %}
+
+	{# {{ dump(app.user) }}; #}
+	
+
+	{% for article in articles %}
+		<section>
+			<h2>{{ article.title }}</h2>
+			<p>{{ article.content }}</p>
+			{% if article.author %}
+				<p class="article_author">
+					Auteur:
+					{{ article.author.name }}
+					{{ article.author.firstname }}
+				</p>
+			{% endif %}
+			<p>{{ article.createdAt |date('d-m-Y H:i') }}</p>
+			<p>{{ article.editedAt |date('d-m-Y H:i') }}</p>
+			<div class="action_button_container">
+				<a class="action_button" href="{{ path('app_article_show', {'id': article.id}) }}">Voir</a>
+			</div>
+		</section>
+	{% endfor %}
+{% endblock %}
