@@ -20,16 +20,15 @@
 
     {% for product in products %}
     {% if (product.IsPublished and product.quantity > 0) %}
-    <section>
-        <h2>{{ product.title }}</h2>
-        <p><img src="{{ product.image }}" width="150px" height="auto"></p>
-        <p>{{ product.description }}</p>
-        <p>Prix: {{ product.price }} €</p>
-        <p>
-            <a class="action_button" href="{{ path('app_product_show', {'id': product.id}) }}">Détails</a>
-            <a class="action_button" href="{{ path('app_home') }}" style="background-color:green">+</a>
-        </p>
-    </section>
+        <section>
+            <h2>{{ product.title }}</h2>
+            <p><img src="{{ product.image }}" width="150px" height="auto"></p>
+            <p>{{ product.description }}</p>
+            <p>Prix: {{ product.price }} €</p>
+            <p>
+                <a class="action_button" href="{{ path('app_product_show', {'id': product.id}) }}">Détails</a>
+            </p>
+        </section>
     {% endif %}
     {% endfor %}
 {% endblock %}

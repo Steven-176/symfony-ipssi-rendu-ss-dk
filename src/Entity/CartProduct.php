@@ -25,6 +25,9 @@ class CartProduct
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $size = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $size_top = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class CartProduct
     public function setSize(?string $size): self
     {
         $this->size = $size;
+
+        return $this;
+    }
+
+    public function getSizeTop(): ?string
+    {
+        return $this->size_top;
+    }
+
+    public function setSizeTop(?string $size_top): self
+    {
+        $this->size_top = $size_top;
 
         return $this;
     }

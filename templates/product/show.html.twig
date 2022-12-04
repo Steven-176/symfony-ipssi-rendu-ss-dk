@@ -5,33 +5,53 @@
 {% block body %}
     <h1>Product</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <td colspan="2"><img src="{{ product.image }}" height="100px" weight="auto"></td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ product.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ product.description }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td>{{ product.price }}</td>
-            </tr>
-            <tr>
-                <th>Created_at</th>
-                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Edited_at</th>
-                <td>{{ product.editedAt ? product.editedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    
+    <div style="justify-content:space-between;display:flex">
+        <section>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td colspan="2"><img src="{{ product.image }}" height="100px" weight="auto"></td>
+                </tr>
+                <tr>
+                    <th>Title</th>
+                    <td>{{ product.title }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ product.description }}</td>
+                </tr>
+                <tr>
+                    <th>Price</th>
+                    <td>{{ product.price }}</td>
+                </tr>
+                <tr>
+                    <th>Created_at</th>
+                    <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Edited_at</th>
+                    <td>{{ product.editedAt ? product.editedAt|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+            </tbody>
+        </table>
+        </section>
+        <section>
+            <h3>Ajout au panier :</h3><br />
+            {{ form_start(addCartForm) }}
+                {{ form_row(addCartForm.product_quantity) }}
+
+                {% if product.category.id == 1 %}
+                    {{ form_row(addCartForm.size_top) }}
+                {% else %}
+                    {{ form_row(addCartForm.size) }}
+                {% endif %}
+            
+            {{ form_end(addCartForm) }}
+            <br />
+            <a class="action_button" href="{{ path('app_home') }}" style="background-color:green">+</a>
+        </section>
+    </div>
 
     <a class="action_button" href="{{ path('app_product_index') }}">back to list</a>
 

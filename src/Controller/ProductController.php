@@ -23,9 +23,6 @@ class ProductController extends AbstractController
         $productForm = $this->createForm(ProductFilterType::class);
         $productForm->handleRequest($request);
 
-        $addCartForm = $this->createForm(AddCartType::class);
-        $addCartForm->handleRequest($request);
-
         if ($productForm->isSubmitted() && $productForm->isValid()) {
             $price = $productForm->get('price')->getData();
             $seller = $productForm->get('seller')->getData();
@@ -49,7 +46,19 @@ class ProductController extends AbstractController
         
         return $this->render('product/index.html.twig', [
             'products' => $products,
-            'productForm' => $productForm->createView()
+            'productForm' => $productForm->createView(),
+            'addCartForm' => $addCartForm->createView()
+        ]);
+    }
+
+    
+    #[Route('product/index/{user}/{product}', name: 'app_cart', methods: ['GET', 'POST'])]
+    public function addCart(): Response
+    {
+        
+
+        return $this->render('cart/index.html.twig', [
+            'controller_name' => 'CartController',
         ]);
     }
 
@@ -75,10 +84,14 @@ class ProductController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_product_show', methods: ['GET'])]
-    public function show(Product $product): Response
+    public function show(Request $request, Product $product): Response
     {
+        $addCartForm = $this->createForm(AddCartType::class);
+        $addCartForm->handleRequest($request);
+
         return $this->render('product/show.html.twig', [
             'product' => $product,
+            'addCartForm' => $addCartForm->createView()
         ]);
     }
 

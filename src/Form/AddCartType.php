@@ -6,6 +6,8 @@ use App\Entity\CartProduct;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class AddCartType extends AbstractType
 {
@@ -16,6 +18,19 @@ class AddCartType extends AbstractType
                 'label' => 'Quantité'
             ])
             ->add('size', ChoiceType::class, [
+                'label' => 'Taille',
+                'choices' => [
+                    '38' => '38',
+                    '39' => '39',
+                    '40' => '40',
+                    '41' => '41',
+                    '42' => '42',
+                    '43' => '43'
+                ],
+                'expanded' => false,
+                'multiple' => false
+            ])
+            ->add('size_top', ChoiceType::class, [
                 'label' => 'Taille',
                 'choices' => [
                     'S' => 'S',
