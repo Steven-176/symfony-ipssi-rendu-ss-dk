@@ -10,8 +10,10 @@
         <p>Prénom : {{ user.firstname }}</p>
         <p>Nom : {{ user.name }}</p>
         <p>Email : {{ user.email }}</p>
-        {{ dump(user.roles) }}
-        {% if user.roles | last == 'ROLE_SELLER' %}
+
+        {% if user.roles | last == 'ROLE_ADMIN' %}
+            <p>Statut : Admin</p>
+        {% elseif user.roles | last == 'ROLE_SELLER' %}
             <p>Statut : Vendeur</p>
         {% else %}
             <p>Statut : Client</p>
@@ -30,6 +32,17 @@
         {{ form_row(form.email) }}        
         <button class="btn action_button">{{ button_label|default('Save') }}</button>
     {{ form_end(form) }}
+
+    <br/>
+    <br/>
+    <br/>
+
+    <h2>Modifier mon mot de passe</h2>
+    {{ form_start(passwordForm) }}
+        {# {{ form_row(passwordForm.plainPassword) }}    #}
+        {{ form_row(passwordForm.password) }}   
+        <button class="btn action_button">{{ button_label|default('Save') }}</button>
+    {{ form_end(passwordForm) }}
 
     
     <div class="content_container">

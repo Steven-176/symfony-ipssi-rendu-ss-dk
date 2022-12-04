@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\PasswordChangeType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,22 +29,17 @@ class UserController extends AbstractController
 
             $form = $this->createForm(UserType::class, $user);
             $form->handleRequest($request);
+
+            $passwordForm = $this->createForm(PasswordChangeType::class, $user);
+            $passwordForm->handleRequest($request);
     
+            // Verification formulaire modification des informations
             if ($form->isSubmitted() && $form->isValid()) {
-                // encode the plain password
-
-                // $user->setPassword(
-                //     $this->userPasswordHasher->hashPassword(
-                //         $user,
-                //         $form->get('plainPassword')->getData()
-                //     )
-                // );
-
                 $user = $form->getData();
     
-                // $userRepository->save($profile, true);
-                $entityManager->persist($user);
-                $entityManager->flush();
+                $userRepository->save($user, true);
+                // $entityManager->persist($user);
+                // $entityManager->flush();
 
                 $this->addFlash(
                     'success',
@@ -52,12 +48,47 @@ class UserController extends AbstractController
                 
                 return $this->redirectToRoute('app_home');
             }
+
+            // Verification formulaire modification du Mot de Passe
+            if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
+                // encode the plain password
+
+                // dd($user, $this->userPasswordHasher->hashPassword($user,$passwordForm->get('plainPassword')->getData()), $passwordForm->get('plainPassword')->getData(), $user->getPassword());
+                // if ($passwordForm->get('plainPassword')->getData() == $user->getPassword()) {
+                //     $user->setPassword(
+                //         $this->userPasswordHasher->hashPassword(
+                //             $user,
+                //             $passwordForm->get('password')->getData()
+                //         )
+                //     );
+                // }
+
+                $user->setPassword(
+                    $this->userPasswordHasher->hashPassword(
+                        $user,
+                        $passwordForm->get('password')->getData()
+                    )
+                );
+
+                $user = $passwordForm->getData();
+    
+                $userRepository->save($user, true);
+
+                $this->addFlash(
+                    'success',
+                    'Le mot de passe de votre compte a bien été modifié.'
+                );
+                
+                return $this->redirectToRoute('app_home');
+            }
+
                     
         return $this->render('user/index.html.twig', [
             'user' => $profile,
             'articles' => $userArticles,
             'products' => $userProducts,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'passwordForm' => $passwordForm->createView()
         ]);
 
         } else {
