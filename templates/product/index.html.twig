@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product index{% endblock %}
+
+{% block body %}
+    <h1>Liste des produits</h1>
+        {% for product in products %}
+        <section>
+            <h2>{{ product.title }}</h2>
+            <p><img src="{{ product.image }}"></p>
+            <p>{{ product.description }}</p>
+            <p>Prix: {{ product.price }} €</p>
+            <p>
+                <a class="action_button" href="{{ path('app_product_show', {'id': product.id}) }}">Détails</a>
+                <a class="action_button" href="{{ path('app_home') }}" style="background-color:green">+</a>
+            </p>
+        </section>
+        {% endfor %}
+    <a class="action_button" href="{{ path('app_product_new') }}">Créer une offre</a>
+{% endblock %}
