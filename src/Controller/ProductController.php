@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use DateTimeImmutable;
 use App\Entity\Product;
+use App\Form\AddCartType;
 use App\Form\ProductType;
 use App\Form\ProductFilterType;
 use App\Repository\ProductRepository;
@@ -21,6 +22,9 @@ class ProductController extends AbstractController
         // dd(['test']);
         $productForm = $this->createForm(ProductFilterType::class);
         $productForm->handleRequest($request);
+
+        $addCartForm = $this->createForm(AddCartType::class);
+        $addCartForm->handleRequest($request);
 
         if ($productForm->isSubmitted() && $productForm->isValid()) {
             $price = $productForm->get('price')->getData();

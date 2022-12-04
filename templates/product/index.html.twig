@@ -19,6 +19,7 @@
     </div>
 
     {% for product in products %}
+    {% if (product.IsPublished and product.quantity > 0) %}
     <section>
         <h2>{{ product.title }}</h2>
         <p><img src="{{ product.image }}" width="150px" height="auto"></p>
@@ -29,5 +30,6 @@
             <a class="action_button" href="{{ path('app_home') }}" style="background-color:green">+</a>
         </p>
     </section>
+    {% endif %}
     {% endfor %}
 {% endblock %}

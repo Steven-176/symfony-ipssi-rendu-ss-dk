@@ -22,6 +22,9 @@ class CartProduct
     #[ORM\Column(nullable: true)]
     private ?int $product_quantity = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $size = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class CartProduct
     public function setProductQuantity(?int $product_quantity): self
     {
         $this->product_quantity = $product_quantity;
+
+        return $this;
+    }
+
+    public function getSize(): ?string
+    {
+        return $this->size;
+    }
+
+    public function setSize(?string $size): self
+    {
+        $this->size = $size;
 
         return $this;
     }

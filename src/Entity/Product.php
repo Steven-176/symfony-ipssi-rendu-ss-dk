@@ -24,10 +24,6 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $price = null;
 
-    private ?int $price_min = null;
-
-    private ?int $price_max = null;
-
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $created_at = null;
 
@@ -51,9 +47,6 @@ class Product
 
     #[ORM\OneToMany(mappedBy: 'products', targetEntity: CartProduct::class)]
     private Collection $cartProducts;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Size = null;
 
     public function __construct()
     {
@@ -211,18 +204,6 @@ class Product
                 $cartProduct->setProducts(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getSize(): ?string
-    {
-        return $this->Size;
-    }
-
-    public function setSize(?string $Size): self
-    {
-        $this->Size = $Size;
 
         return $this;
     }
