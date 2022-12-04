@@ -24,6 +24,10 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $price = null;
 
+    private ?int $price_min = null;
+
+    private ?int $price_max = null;
+
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $created_at = null;
 

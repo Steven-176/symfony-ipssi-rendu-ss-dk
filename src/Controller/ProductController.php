@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTimeImmutable;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Form\ProductFilterType;
@@ -14,26 +15,33 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/product')]
 class ProductController extends AbstractController
 {
-    #[Route('', name: 'app_product_index', methods: ['GET'])]
+    #[Route('', name: 'app_product_index', methods: ['GET', 'POST'])]
     public function index(Request $request, ProductRepository $productRepository): Response
     {
+        // dd(['test']);
         $productForm = $this->createForm(ProductFilterType::class);
         $productForm->handleRequest($request);
 
         if ($productForm->isSubmitted() && $productForm->isValid()) {
-            $price_min = $productForm->get('price_min')->getData();
-            $price_max = $productForm->get('price_max')->getData();
+            $price = $productForm->get('price')->getData();
             $seller = $productForm->get('seller')->getData();
             $category = $productForm->get('category')->getData();
-            $order = $productForm->get('order')->getData();
-            $sellerId = $seller->getId();
-            $categoryId = $category->getId();
-            
-            $products = $productRepository->findByFilterType($price_min, $price_max, $seller, $category, $order);
+            $order = $productForm->get('title')->getData();
+
+            if ($seller) {
+                $seller = $seller->getId();
+            }
+            if ($category) {
+                $category = $category->getId();
+            }
+
+            $products = $productRepository->findByFilterType($price, $seller, $category, $order);
         } else {
 
             $products = $productRepository->findAll();
         }
+
+        // dd($products);
         
         return $this->render('product/index.html.twig', [
             'products' => $products,
@@ -49,6 +57,8 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $product->setCreatedAt(new DateTimeImmutable('now'));
+            $product->setSeller($user);
             $productRepository->save($product, true);
 
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
