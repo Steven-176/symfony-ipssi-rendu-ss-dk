@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -26,6 +27,15 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('firstname', TextType::class, [
                 "label" => "Prénom "
+            ])
+            ->add('sexe', ChoiceType::class, [
+                'label' => 'Sexe ',
+                'choices' => [
+                    'Homme' => 'M',
+                    'Femme' => 'F'
+                ],
+                'expanded' => false,
+                'multiple' => false
             ])
             ->add('email')
             ->add('plainPassword', PasswordType::class, [
@@ -55,14 +65,14 @@ class RegistrationFormType extends AbstractType
             ->add('roles', ChoiceType::class, [
                 'label' => 'Statut',
                 'choices' => [
-                    'Vendeur' => 'ROLE_SELLER',
-                    'Client' => ''
+                    'Vendeur' => 'ROLE_USER ROLE_SELLER',
+                    'Client' => 'ROLE_USER'
                 ],
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => false
             ])
             
-            ;
+        ;
 
             
             
@@ -70,6 +80,10 @@ class RegistrationFormType extends AbstractType
             ->addModelTransformer(new CallbackTransformer(
                 function ($rolesArray) {
                     // transform the array to a string
+                    // $arrayTmp = explode(" ", $rolesArray);
+
+                    // dd($rolesArray);
+
                     return count($rolesArray)? $rolesArray[0]: null;
                 },
                 function ($rolesString) {

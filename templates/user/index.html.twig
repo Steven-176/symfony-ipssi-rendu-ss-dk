@@ -10,8 +10,12 @@
         <p>Prénom : {{ user.firstname }}</p>
         <p>Nom : {{ user.name }}</p>
         <p>Email : {{ user.email }}</p>
-        {# <p>{{ user.roles }}</p> #}
-        
+        {{ dump(user.roles) }}
+        {% if user.roles | last == 'ROLE_SELLER' %}
+            <p>Statut : Vendeur</p>
+        {% else %}
+            <p>Statut : Client</p>
+        {% endif %}
     </div>
 
     <br/>
